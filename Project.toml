@@ -14,4 +14,4 @@ SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [compat]
 julia = "1.6"
-AbstratPDEInterfaces = "0.1.0"
+AbstractPDEInterfaces = "0.1.0"
