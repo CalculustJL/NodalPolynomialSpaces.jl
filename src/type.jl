@@ -32,8 +32,8 @@ struct NodalPolynomialSpace{T,
 end
 
 function NodalPolynomialSpace(n::Integer;
-        dom::Domains.AbstractDomain{<:Any,1}=ChebychevDomain(1),
-        quadrature = gausschebychev,
+        dom::Domains.AbstractDomain{<:Any,1}=ChebyshevDomain(1),
+        quadrature = gausschebyshev,
         T = Float64,
        )
 
@@ -44,7 +44,7 @@ function NodalPolynomialSpace(n::Integer;
     end
 
     #""" reset deformation to map from [-1,1]^D """
-    #ref_dom = ChebychevDomain(1)
+    #ref_dom = ChebyshevDomain(1)
     #dom = ref_domain # map_from_ref(domain, ref_dom) # TODO
     ## change dom eltype
 
@@ -73,7 +73,7 @@ function NodalPolynomialSpace(n::Integer;
 end
 
 function NodalPolynomialSpace(nr::Integer, ns::Integer;
-        dom::Domains.AbstractDomain{<:Number,2}=ChebychevDomain(2),
+        dom::Domains.AbstractDomain{<:Number,2}=ChebyshevDomain(2),
         quadrature = gausslobatto,
         T = Float64,
        )
@@ -83,7 +83,7 @@ function NodalPolynomialSpace(nr::Integer, ns::Integer;
     end
 
     #""" reset deformation to map from [-1,1]^D """
-    #ref_dom = ChebychevDomain(2)
+    #ref_dom = ChebyshevDomain(2)
     #dom = ref_dom # map_from_ref(dom, ref_dom) # TODO
 
     zr, wr = quadrature(nr)
@@ -118,6 +118,6 @@ GaussLobattoLegendreSpace(args...; kwargs...) =
     NodalPolynomialSpace(args...; quadrature=gausslobatto, kwargs...)
 GaussLegendreSpace(args...; kwargs...) =
     NodalPolynomialSpace(args...; quadrature=gausslegendre, kwargs...)
-GaussChebychevSpace(args...; kwargs...) =
+GaussChebyshevSpace(args...; kwargs...) =
     NodalPolynomialSpace(args...; quadrature=gausschebyshev, kwargs...)
 #

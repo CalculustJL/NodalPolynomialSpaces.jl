@@ -4,13 +4,14 @@
 ###
 
 # TODO - discretization option
-function massOp(space::NodalPolynomialSpace, ::Galerkin)
+function Spaces.massOp(space::NodalPolynomialSpace, ::Galerkin)
     mass_mat = mass_matrix(space)
 
     DiagonalOperator(mass_mat)
 end
 
-function gradientOp(space::NodalPolynomialSpace{<:Number,1})
+function Spaces.gradientOp(space::NodalPolynomialSpace{<:Number,1},
+                           ::Spaces.AbstractDiscretization)
     (Dr,) = space.deriv_mats
 
     Dx = MatrixOperator(Dr)
@@ -18,7 +19,8 @@ function gradientOp(space::NodalPolynomialSpace{<:Number,1})
     DD = [Dx,]
 end
 
-function gradientOp(space::NodalPolynomialSpace{<:Number,2})
+function Spaces.gradientOp(space::NodalPolynomialSpace{<:Number,2},
+                          ::Spaces.AbstractDiscretization)
     (nr, ns) = space.npoints
     (Dr, Ds) = space.deriv_mats
 
@@ -32,7 +34,8 @@ function gradientOp(space::NodalPolynomialSpace{<:Number,2})
           Dy]
 end
 
-function gradientOp(space::NodalPolynomialSpace{<:Number,3})
+function Spaces.gradientOp(space::NodalPolynomialSpace{<:Number,3},
+                           ::Spaces.AbstractDiscretization)
     (Dr, Ds, Dt) = space.deriv_mats
     (nr, ns, nt) = space.npoints
 
@@ -53,8 +56,8 @@ end
 # interpolation operators
 ###
 
-function interpOp(space1::NodalPolynomialSpace{<:Number,1},
-                  space2::NodalPolynomialSpace{<:Number,1})
+function Spaces.interpOp(space1::NodalPolynomialSpace{<:Number,1},
+                         space2::NodalPolynomialSpace{<:Number,1})
     r1, _ = space1.quads[1]
     r2, _ = space2.quads[1]
 
@@ -63,8 +66,8 @@ function interpOp(space1::NodalPolynomialSpace{<:Number,1},
     MatrixOperator(J)
 end
 
-function interpOp(space1::NodalPolynomialSpace{<:Number,2},
-                  space2::NodalPolynomialSpace{<:Number,2})
+function Spaces.interpOp(space1::NodalPolynomialSpace{<:Number,2},
+                         space2::NodalPolynomialSpace{<:Number,2})
     r1, _ = space1.quads[1]
     r2, _ = space2.quads[1]
 
@@ -77,8 +80,8 @@ function interpOp(space1::NodalPolynomialSpace{<:Number,2},
     ⊗(Js, Jr)
 end
 
-function interpOp(space1::NodalPolynomialSpace{<:Number,3},
-                  space2::NodalPolynomialSpace{<:Number,3})
+function Spaces.interpOp(space1::NodalPolynomialSpace{<:Number,3},
+                         space2::NodalPolynomialSpace{<:Number,3})
     r1, _ = space1.quads[1]
     r2, _ = space2.quads[1]
 

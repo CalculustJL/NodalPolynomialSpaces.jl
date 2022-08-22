@@ -1,29 +1,30 @@
 #
-using PDEInterfaces
+using NodalPolynomialSpaces
 let
     # add dependencies to env stack
-    pkgpath = dirname(dirname(pathof(PDEInterfaces)))
+    pkgpath = dirname(dirname(pathof(NodalPolynomialSpaces)))
     tstpath = joinpath(pkgpath, "test")
     !(tstpath in LOAD_PATH) && push!(LOAD_PATH, tstpath)
     nothing
 end
 
-using SciMLOperators, LinearSolve
+using LinearAlgebra, LinearSolve, Plots
 
 N = 32
 
-dom = reference_box(1)
-space = GaussLobattoLegendre1D(N; domain=dom)
-(x,) = pts = grid(space)
+space = GaussLobattoLegendreSpace(N)
+discr = Galerkin()
 
-op = laplaceOp(space)
+(x,) = points(space)
+
+op = laplaceOp(space, discr)
 f  = @. 0*x + 1
 bcs = Dict(
            :Lower1 => DirichletBC(),
            :Upper1 => DirichletBC(),
           )
 
-prob = BVPDEProblem(op, f, bcs, space)
+prob = BVPDEProblem(op, f, bcs, space, discr)
 alg  = LinearBVPDEAlg(linalg=IterativeSolversJL_CG())
 
 @time sol = solve(prob, alg; verbose=false)

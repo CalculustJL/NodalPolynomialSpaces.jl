@@ -1,11 +1,22 @@
-using PDEInterfaces, OrdinaryDiffEq, Plots
+using NodalPolynomialSpaces
+let
+    # add dependencies to env stack
+    pkgpath = dirname(dirname(pathof(NodalPolynomialSpaces)))
+    tstpath = joinpath(pkgpath, "test")
+    !(tstpath in LOAD_PATH) && push!(LOAD_PATH, tstpath)
+    nothing
+end
+
+using LinearAlgebra, LinearSolve, OrdinaryDiffEq, Plots
+
 N = 32
 
-domain = GLLBox(2)
-space = GaussLobattoLegendre(N, N; domain=domain)
+space = GaussLobattoLegendreSpace(N, N)
+discr = Galerkin()
+
+op = laplaceOp(space, discr)
 (x, y,) = points(space)
 
-op = laplaceOp(space)
 f  = @. 0*x + 1
 bcs = Dict(
            :Lower1 => NeumannBC(),
@@ -15,7 +26,7 @@ bcs = Dict(
            :Upper2 => NeumannBC(),
           )
 
-prob = BVPDEProblem(op, f, bcs, space)
+prob = BVPDEProblem(op, f, bcs, space, discr)
 alg  = LinearBVPDEAlg(linalg=IterativeSolversJL_CG())
 
 @time sol = solve(prob, alg; verbose=false)

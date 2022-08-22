@@ -1,24 +1,24 @@
 #
-using PDEInterfaces.Spaces
-using LinearAlgebra, LinearSolve, SciMLOperators
+using NodalPolynomialSpaces
+using LinearAlgebra, LinearSolve
 
 N = 128
 dom = GaussLobattoLegendreDomain(1)
 discr = Galerkin()
 
 for space in (
-              GaussLobattoLegendre(N),
-#             GaussLegendre(N),
-#             GaussChebychev(N),
+              GaussLobattoLegendreSpace(N),
+              #GaussLegendreSpace(N),
+              #GaussChebyshevSpace(N),
              )
     (x,) = pts = points(space)
 
     D = gradientOp(space, discr) |> first
     M = massOp(space, discr)
-    A = laplaceOp(space)
+    A = laplaceOp(space, discr)
 
     xp = range(-1,1;length=1000) |> Array
-    J  = Spaces.lagrange_interp_mat(xp, x)
+    J  = NodalPolynomialSpaces.lagrange_interp_mat(xp, x)
 
     u0 = @. 0*x + 1
     u1 = @. 1.0*x
