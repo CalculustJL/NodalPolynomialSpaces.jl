@@ -1,5 +1,10 @@
 NodalPolynomialSpaces.jl
 
 Goals
-- [ ] Separate cases for 4 chebyshev quadratures
-- [ ] account for the fact that some quadratures don't provide boundary points
+- [ ] Spaces
+  - [X] Gauss Lobatto Legendre
+  - [ ] Gauss Legendre 
+  - [ ] Gauss Chebyshev (all four kinds)
+- [ ] Boundary Value Problem
+  - [X] when quadrature contains boundary points
+  - [ ] when quadrature doesn't have boundary points
