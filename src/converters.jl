@@ -16,22 +16,4 @@ function (::Type{T})(space::NodalPolynomialSpace) where{T<:Number}
                          mass_mat, deriv_mats, loc_num,
                         )
 end
-
-function Adapt.adapt_structure(to, space::NodalPolynomialSpace)
-    grid  = adapt_structure(to, points(space))
-    quads = adapt_structure(to, quadratures(space))
-    mass_mat = adapt_structure(to, mass_matrix(space))
-    loc_num = adapt_structure(to, local_numbering(space))
-
-    x = first(grid)
-    T = eltype(x)
-
-    npoints = size(space)
-    dom     = T(domain(space))
-
-    NodalPolynomialSpace(
-                         npoints, dom, quads, grid,
-                         mass_mat, deriv_mats, loc_num,
-                        )
-end
 #

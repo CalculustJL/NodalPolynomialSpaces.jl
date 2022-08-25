@@ -11,15 +11,21 @@ end
 using LinearAlgebra, LinearSolve
 using Plots, Test
 
-N = 32
+N = 256
+ν = 1e-4
 
 space = GaussLobattoLegendreSpace(N)
 discr = Galerkin()
-
 (x,) = points(space)
 
-op = laplaceOp(space, discr)
-f  = @. 0*x + 1
+v = @. 0*x + 1
+f = @. 0*x + 1
+
+A = diffusionOp(ν, space, discr)
+C = advectionOp((v,), space, discr)
+
+op = cache_operator(C-A, x)
+
 bcs = Dict(
            :Lower1 => DirichletBC(),
            :Upper1 => DirichletBC(),
@@ -29,6 +35,6 @@ prob = BoundaryValueProblem(op, f, bcs, space, discr)
 alg  = LinearBoundaryValueAlg(linalg=KrylovJL_CG())
 
 @time sol = solve(prob, alg; verbose=false)
+@show sol.resid
 plt = plot(sol)
-savefig(plt, "bvp_dd")
-@test sol.resid < 1e-8
+#savefig(plt, "bvp_dd")

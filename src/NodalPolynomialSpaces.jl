@@ -5,7 +5,6 @@ using Reexport
 
 using LinearAlgebra
 using SparseArrays
-using Adapt
 
 import FastGaussQuadrature: gausslobatto, gausslegendre, gausschebyshev
 

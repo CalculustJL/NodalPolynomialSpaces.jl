@@ -7,7 +7,8 @@ let
     nothing
 end
 
-using LinearAlgebra, LinearSolve, OrdinaryDiffEq, Plots
+using LinearAlgebra, LinearSolve
+using Test, Plots
 
 N = 32
 
@@ -26,8 +27,8 @@ bcs = Dict(
            :Upper2 => NeumannBC(),
           )
 
-prob = BVPDEProblem(op, f, bcs, space, discr)
-alg  = LinearBVPDEAlg(linalg=IterativeSolversJL_CG())
+prob = BoundaryValueProblem(op, f, bcs, space, discr)
+alg  = LinearBoundaryValueAlg(linalg=KrylovJL_CG())
 
 @time sol = solve(prob, alg; verbose=false)
 @test sol.resid < 1e-8

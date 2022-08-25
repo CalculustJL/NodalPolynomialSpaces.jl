@@ -3,7 +3,6 @@
 # vector calculus ops
 ###
 
-# TODO - discretization option
 function Spaces.massOp(space::NodalPolynomialSpace, ::Galerkin)
     mass_mat = mass_matrix(space)
 
