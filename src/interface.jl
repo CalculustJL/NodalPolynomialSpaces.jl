@@ -13,7 +13,7 @@ Spaces.local_numbering(space::NodalPolynomialSpace) = space.loc_num
 
 function Spaces.global_numbering(space::NodalPolynomialSpace)
     dom = domain(space)
-    loc_num = local_numbering(space)
+    loc_num = local_numbering(space) # TODO
 end
 
 function Spaces.boundary_nodes(space::NodalPolynomialSpace)

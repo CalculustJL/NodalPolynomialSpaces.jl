@@ -31,10 +31,10 @@ bcs = Dict(
            :Upper1 => DirichletBC(),
           )
 
-prob = BoundaryValueProblem(op, f, bcs, space, discr)
+prob = BoundaryValueProblem(op, f, bcs, space, discr, abstol=1e-8, reltol=1e-8)
 alg  = LinearBoundaryValueAlg(linalg=KrylovJL_CG())
 
 @time sol = solve(prob, alg; verbose=false)
 @show sol.resid
 plt = plot(sol)
-#savefig(plt, "bvp_dd")
+#

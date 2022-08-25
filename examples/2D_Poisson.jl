@@ -10,7 +10,7 @@ end
 using LinearAlgebra, LinearSolve
 using Test, Plots
 
-N = 32
+N = 64
 
 space = GaussLobattoLegendreSpace(N, N)
 discr = Galerkin()
@@ -18,7 +18,7 @@ discr = Galerkin()
 op = laplaceOp(space, discr)
 (x, y,) = points(space)
 
-f  = @. 0*x + 1
+f = @. 0*x + 1
 bcs = Dict(
            :Lower1 => NeumannBC(),
            :Upper1 => DirichletBC(),
@@ -27,10 +27,10 @@ bcs = Dict(
            :Upper2 => NeumannBC(),
           )
 
-prob = BoundaryValueProblem(op, f, bcs, space, discr)
+prob = BoundaryValueProblem(op, f, bcs, space, discr, abstol=1e-8, reltol=1e-8)
 alg  = LinearBoundaryValueAlg(linalg=KrylovJL_CG())
 
 @time sol = solve(prob, alg; verbose=false)
-@test sol.resid < 1e-8
+@test sol.resid < 1e-6
 plt = plot(sol)
 savefig(plt, "bvp2d_dn")
