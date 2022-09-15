@@ -11,14 +11,15 @@ using LinearAlgebra, LinearSolve
 using Test, Plots
 
 N = 64
+ν = 0.1
 
 space = GaussLobattoLegendreSpace(N, N)
 discr = Galerkin()
 
-op = laplaceOp(space, discr)
+op = diffusionOp(ν, space, discr)
 (x, y,) = points(space)
 
-f = @. 0*x + 1
+f = @. sin(x) * cos(y)
 bcs = Dict(
            :Lower1 => NeumannBC(),
            :Upper1 => DirichletBC(),
@@ -31,6 +32,6 @@ prob = BoundaryValueProblem(op, f, bcs, space, discr, abstol=1e-8, reltol=1e-8)
 alg  = LinearBoundaryValueAlg(linalg=KrylovJL_CG())
 
 @time sol = solve(prob, alg; verbose=false)
-@test sol.resid < 1e-6
+@test sol.resid < 1e-8
 plt = plot(sol)
 savefig(plt, "bvp2d_dn")

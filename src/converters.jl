@@ -9,11 +9,11 @@ function (::Type{T})(space::NodalPolynomialSpace) where{T<:Number}
     mass_mat = T.(mass_matrix(space))
     deriv_mats = Tuple(T.(D) for D in space.deriv_mats)
 
-    loc_num = local_numbering(space)
+    glo_num = global_numbering(space)
 
     NodalPolynomialSpace(
                          npoints, dom, quads, grid,
-                         mass_mat, deriv_mats, loc_num,
+                         mass_mat, deriv_mats, glo_num,
                         )
 end
 #

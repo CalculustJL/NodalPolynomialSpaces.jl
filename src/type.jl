@@ -10,8 +10,7 @@ struct NodalPolynomialSpace{T,
                             Tgrid,
                             Tmass,
                             Tderiv,
-                            Tloc,
-#                           Tglo
+                            Tglo
                            } <: Spaces.AbstractSpace{T,D}
     """ size """
     npoints::Tpts
@@ -25,10 +24,8 @@ struct NodalPolynomialSpace{T,
     mass_mat::Tmass
     """ derivative matrices """
     deriv_mats::Tderiv
-    """ local numbering """
-    loc_num::Tloc
-#   """ global numbering """
-#   glo_num::Tglo
+    """ global numbering """
+    glo_num::Tglo
 end
 
 function NodalPolynomialSpace(n::Integer;
@@ -61,12 +58,12 @@ function NodalPolynomialSpace(n::Integer;
     grid    = vec.((z,))
     mass_mat = vec(w)
     deriv_mats = (D,)
-    loc_num = reshape(1:prod(npoints), npoints)
+    glo_num = reshape(1:prod(npoints), npoints)
 
     space = NodalPolynomialSpace(
                                  npoints, dom, quads, grid,
                                  mass_mat, deriv_mats, 
-                                 loc_num,
+                                 glo_num,
                                 )
 
     dom isa Domains.DeformedDomain ? deform(space, mapping) : space
@@ -103,12 +100,12 @@ function NodalPolynomialSpace(nr::Integer, ns::Integer;
     grid = vec.((r, s,))
     mass_mat = vec(wr * ws')
     deriv_mats = (Dr, Ds,)
-    loc_num = reshape(1:prod(npoints), npoints)
+    glo_num = reshape(1:prod(npoints), npoints)
 
     space = NodalPolynomialSpace(
                                  npoints, dom, quads, grid,
                                  mass_mat, deriv_mats,
-                                 loc_num,
+                                 glo_num,
                                 )
 
     dom isa Domains.DeformedDomain ? deform(space, mapping) : space
