@@ -1,7 +1,7 @@
 name = "NodalPolynomialSpaces"
 uuid = "0b197c3a-da26-4bf3-b373-765e7d9e4c53"
 authors = ["Vedant Puri <vedantpuri@gmail.com>"]
-version = "0.1.1"
+version = "0.1.2"
 
 [deps]
 AbstractPDEInterfaces = "db474457-f03d-4fd7-b196-5f323c96c803"
