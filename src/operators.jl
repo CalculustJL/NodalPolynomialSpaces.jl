@@ -23,8 +23,8 @@ function Spaces.gradientOp(space::NodalPolynomialSpace{<:Number,2},
     (nr, ns) = space.npoints
     (Dr, Ds) = space.deriv_mats
 
-    Ir = IdentityOperator{nr}()
-    Is = IdentityOperator{ns}()
+    Ir = IdentityOperator(nr)
+    Is = IdentityOperator(ns)
 
     Dx = ⊗(Is, Dr)
     Dy = ⊗(Ds, Ir)
@@ -38,9 +38,9 @@ function Spaces.gradientOp(space::NodalPolynomialSpace{<:Number,3},
     (Dr, Ds, Dt) = space.deriv_mats
     (nr, ns, nt) = space.npoints
 
-    Ir = IdentityOperator{nr}()
-    Is = IdentityOperator{ns}()
-    It = IdentityOperator{nt}()
+    Ir = IdentityOperator(nr)
+    Is = IdentityOperator(ns)
+    It = IdentityOperator(nt)
 
     Dx = ⊗(It, Is, Dr)
     Dy = ⊗(It, Ds, It)

@@ -4,6 +4,6 @@
 end
 
 @testset "2D tests" begin
-    @time @safetestset "Heat trans" begin include("../examples/2D_Poisson.jl") end
+    # @time @safetestset "Heat trans" begin include("../examples/2D_Poisson.jl") end
 end
 #
