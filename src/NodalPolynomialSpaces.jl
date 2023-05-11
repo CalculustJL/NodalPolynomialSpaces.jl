@@ -1,7 +1,7 @@
 module NodalPolynomialSpaces
 
 using Reexport
-@reexport using AbstractPDEInterfaces
+@reexport using CalculustCore
 
 using LinearAlgebra
 using SparseArrays

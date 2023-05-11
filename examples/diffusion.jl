@@ -1,4 +1,4 @@
-using AbstractPDEInterfaces, NodalPolynomialSpaces
+using NodalPolynomialSpaces
 
 N = 64
 ν = 0.01

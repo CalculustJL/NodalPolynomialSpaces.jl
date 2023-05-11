@@ -4,14 +4,14 @@ authors = ["Vedant Puri <vedantpuri@gmail.com>"]
 version = "0.2.1"
 
 [deps]
-AbstractPDEInterfaces = "db474457-f03d-4fd7-b196-5f323c96c803"
+CalculustCore = "d7326954-f021-11ed-2a08-d10e464848f1"
 FastGaussQuadrature = "442a2c76-b920-505d-bb47-c5924d526838"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [compat]
-AbstractPDEInterfaces = "0.2.5"
+CalculustCore = "0.3"
 FastGaussQuadrature = "0.4.9, 0.5"
 Reexport = "1.2.2"
 julia = "1.6"
