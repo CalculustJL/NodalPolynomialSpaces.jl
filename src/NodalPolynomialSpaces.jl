@@ -15,6 +15,7 @@ include("interface.jl")
 include("operators.jl")
 
 export NodalPolynomialSpace,
-       GaussLobattoLegendreSpace, GaussLegendreSpace, GaussChebyshevSpace
+       GaussLobattoLegendreSpace, GaussLegendreSpace, GaussChebyshevSpace,
+       GLLSpace, GLSpace, GCSpace
 
 end # module

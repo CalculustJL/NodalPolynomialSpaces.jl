@@ -111,10 +111,11 @@ function NodalPolynomialSpace(nr::Integer, ns::Integer;
     dom isa Domains.DeformedDomain ? deform(space, mapping) : space
 end
 
-GaussLobattoLegendreSpace(args...; kwargs...) =
-    NodalPolynomialSpace(args...; quadrature=gausslobatto, kwargs...)
-GaussLegendreSpace(args...; kwargs...) =
-    NodalPolynomialSpace(args...; quadrature=gausslegendre, kwargs...)
-GaussChebyshevSpace(args...; kwargs...) =
-    NodalPolynomialSpace(args...; quadrature=gausschebyshev, kwargs...)
+GaussLobattoLegendreSpace(args...; kwargs...) = NodalPolynomialSpace(args...; quadrature=gausslobatto, kwargs...)
+GaussLegendreSpace(args...; kwargs...) = NodalPolynomialSpace(args...; quadrature=gausslegendre, kwargs...)
+GaussChebyshevSpace(args...; kwargs...) = NodalPolynomialSpace(args...; quadrature=gausschebyshev, kwargs...)
+
+const GLLSpace = GaussLobattoLegendreSpace
+const GLSpace = GaussLegendreSpace
+const GCSpace = GaussChebyshevSpace
 #
