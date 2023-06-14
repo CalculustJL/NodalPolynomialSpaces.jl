@@ -2,6 +2,10 @@ module NodalPolynomialSpaces
 
 using Reexport
 @reexport using CalculustCore
+using CalculustCore.Spaces: AbstractSpace, AbstractDiscretization, TransformedSpace
+using CalculustCore.Domains: AbstractDomain, ProductDomain
+
+using SciMLOperators: AbstractSciMLOperator
 
 using LinearAlgebra
 using SparseArrays

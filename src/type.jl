@@ -29,16 +29,36 @@ struct NodalPolynomialSpace{T,
 end
 
 function NodalPolynomialSpace(n::Integer;
-        dom::Domains.AbstractDomain{<:Any,1}=ChebyshevDomain(1),
+        domain::AbstractDomain{<:Any,1} = ChebyshevDomain(1),
         quadrature = gausschebyshev,
         T = Float64,
        )
 
-    if dom isa IntervalDomain
-        dom = BoxDomain(dom)
-    elseif !(dom isa BoxDomain)
-        @error "spectral polynomials work with logically rectangular domains"
+    if !isa(domain, Domains.LogicallyRectangularDomain)
+        msg = """Spectral polynomials work with logically rectangular
+            domains. `domain` must either be a `Domains.IntervalDomain`,
+            or product of interval domains created with `LinearAlgebra.×`.
+            Optionally `domain` may be a `Domains.MappedDomain` generated
+            as `Domains.deform(dom, mapping)`.
+            """
+        throw(ArgumentError(msg))
     end
+
+    # check for deformation
+    dom, mapping = if domain isa Domains.MappedDomain
+        domain.domain, domain.mapping
+    else
+        domain, nothing
+    end
+
+    # put domain in a box
+    if dom isa IntervalDomain
+        dom = ProductDomain(dom)
+    end
+
+    @assert dom isa Domains.BoxedDomain
+
+    # JUST MULTIPLY DIFF MATRIX AND MASS MATRIX with the right scaling
 
     #""" reset deformation to map from [-1,1]^D """
     #ref_dom = ChebyshevDomain(1)
@@ -60,24 +80,39 @@ function NodalPolynomialSpace(n::Integer;
     deriv_mats = (D,)
     glo_num = reshape(1:prod(npoints), npoints)
 
-    space = NodalPolynomialSpace(
-                                 npoints, dom, quads, grid,
-                                 mass_mat, deriv_mats, 
-                                 glo_num,
-                                )
+    V = NodalPolynomialSpace(
+                             npoints, dom, quads, grid,
+                             mass_mat, deriv_mats, 
+                             glo_num,
+                            )
 
-    dom isa Domains.DeformedDomain ? deform(space, mapping) : space
+    isnothing(mapping) ? V : deform(V, mapping)
 end
 
 function NodalPolynomialSpace(nr::Integer, ns::Integer;
-        dom::Domains.AbstractDomain{<:Number,2}=ChebyshevDomain(2),
+        domain::AbstractDomain{<:Number,2} = ChebyshevDomain(2),
         quadrature = gausslobatto,
         T = Float64,
        )
 
-    if !(dom isa BoxDomain)
-        @error "spectral polynomials work with logically rectangular domains"
+    if !isa(domain, Domains.LogicallyRectangularDomain)
+        msg = """Trigonometric polynomials work with logically rectangular
+            domains. `domain` must be a product of `Domains.IntervalDomain`
+            created with `LinearAlgebra.×`. Optionally `domain` may be a
+            `Domains.MappedDomain` generated as `Domains.deform(dom, map)`.
+            """
+        throw(ArgumentError(msg))
     end
+
+    # check for deformation
+    dom, mapping = if domain isa MappedDomain
+        domain.domain, domain.mapping
+    else
+        domain, nothing
+    end
+
+    # put domain in a box
+    @assert dom isa Domains.BoxedDomain
 
     #""" reset deformation to map from [-1,1]^D """
     #ref_dom = ChebyshevDomain(2)
@@ -89,7 +124,7 @@ function NodalPolynomialSpace(nr::Integer, ns::Integer;
     zr, wr = T.(zr), T.(wr)
     zs, ws = T.(zs), T.(ws)
 
-    r, s = ndgrid(zr,zs)
+    r, s = ndgrid(zr, zs)
 
     Dr = lagrange_deriv_mat(zr)
     Ds = lagrange_deriv_mat(zs)
@@ -102,13 +137,13 @@ function NodalPolynomialSpace(nr::Integer, ns::Integer;
     deriv_mats = (Dr, Ds,)
     glo_num = reshape(1:prod(npoints), npoints)
 
-    space = NodalPolynomialSpace(
-                                 npoints, dom, quads, grid,
-                                 mass_mat, deriv_mats,
-                                 glo_num,
-                                )
+    V = NodalPolynomialSpace(
+                             npoints, dom, quads, grid,
+                             mass_mat, deriv_mats,
+                             glo_num,
+                            )
 
-    dom isa Domains.DeformedDomain ? deform(space, mapping) : space
+    isnothing(mapping) ? V : deform(V, mapping)
 end
 
 GaussLobattoLegendreSpace(args...; kwargs...) = NodalPolynomialSpace(args...; quadrature=gausslobatto, kwargs...)

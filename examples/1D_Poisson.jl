@@ -20,8 +20,8 @@ discr = Galerkin()
 op = -laplaceOp(space, discr)
 f  = @. 0*x + 1
 bcs = Dict(
-           :Lower1 => DirichletBC(),
-           :Upper1 => DirichletBC(),
+           :D1_inf => DirichletBC(),
+           :D1_sup => DirichletBC(),
           )
 
 prob = BoundaryValueProblem(op, f, bcs, space, discr, abstol=1e-8, reltol=1e-8)

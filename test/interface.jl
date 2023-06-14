@@ -3,13 +3,13 @@ using NodalPolynomialSpaces
 using LinearAlgebra, LinearSolve
 
 N = 128
-dom = GaussLobattoLegendreDomain(1)
+dom = ChebyshevDomain(1)
 discr = Galerkin()
 
 for space in (
-              GaussLobattoLegendreSpace(N),
-              #GaussLegendreSpace(N),
-              #GaussChebyshevSpace(N),
+              GLLSpace(N),
+              # GLSpace(N),
+              # GCSpace(N),
              )
     (x,) = pts = points(space)
 
