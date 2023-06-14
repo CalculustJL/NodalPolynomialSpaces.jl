@@ -21,11 +21,11 @@ op = diffusionOp(ν, space, discr)
 
 f = @. sin(x) * cos(y)
 bcs = Dict(
-           :Lower1 => NeumannBC(),
-           :Upper1 => DirichletBC(),
+           :D1_inf => NeumannBC(),
+           :D1_sup => DirichletBC(),
 
-           :Lower2 => DirichletBC(),
-           :Upper2 => NeumannBC(),
+           :D2_inf => DirichletBC(),
+           :D2_sup => NeumannBC(),
           )
 
 prob = BoundaryValueProblem(op, f, bcs, space, discr, abstol=1e-8, reltol=1e-8)

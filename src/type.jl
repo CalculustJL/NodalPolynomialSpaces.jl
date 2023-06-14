@@ -105,7 +105,7 @@ function NodalPolynomialSpace(nr::Integer, ns::Integer;
     end
 
     # check for deformation
-    dom, mapping = if domain isa MappedDomain
+    dom, mapping = if domain isa Domains.MappedDomain
         domain.domain, domain.mapping
     else
         domain, nothing
