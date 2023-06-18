@@ -5,6 +5,8 @@ using Reexport
 using CalculustCore.Spaces: AbstractSpace, AbstractDiscretization, TransformedSpace
 using CalculustCore.Domains: AbstractDomain, ProductDomain
 
+@reexport using BoundaryValueProblems
+
 using SciMLOperators: AbstractSciMLOperator
 
 using LinearAlgebra
